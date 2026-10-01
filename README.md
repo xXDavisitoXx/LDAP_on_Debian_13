@@ -303,6 +303,74 @@ sudo ldapadd -Y EXTERNAL -H ldapi:/// -f extract/usr/share/doc/sudo-ldap/schema.
 find extract -name "schema.olcSudo"
 ```
 
+### Add MemberOf Module
+```bash
+nano Memberof.ldif
+```
+```bash
+#Memberof.ldif
+
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: memberof
+```
+```bash
+sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f Memberof.ldif
+```
+----------------------------------------------------------------------------------------------------------------
+### Add Overlay MemberOf
+```bash
+nano OverlayMemberOf.ldif
+```
+```conf
+# OverlayMemberOf.ldif
+
+dn: olcOverlay=memberof,olcDatabase={1}mdb,cn=config
+objectClass: olcConfig
+objectClass: olcMemberOf
+objectClass: olcOverlayConfig
+objectClass: top
+olcOverlay: memberof
+olcMemberOfRefInt: TRUE
+```
+```bash
+sudo ldapadd -Y EXTERNAL -H ldapi:/// -f OverlayMemberOf.ldif
+```
+----------------------------------------------------------------------------------------------------------------
+### Add Refint Module
+```bash
+nano Refint.ldif
+```
+```conf
+# Refint.ldif
+
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: refint
+```
+```bash
+sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f Refint.ldif
+```
+----------------------------------------------------------------------------------------------------------------
+### Add Overlay Refint
+```bash
+nano OverlayRefint.ldif
+```
+```conf
+# OverlayRefint.ldif
+
+dn: olcOverlay=refint,olcDatabase={1}mdb,cn=config
+objectClass: olcConfig
+objectClass: olcOverlayConfig
+objectClass: olcRefintConfig
+olcOverlay: refint
+olcRefintAttribute: member memberOf
+```
+```bash
+sudo ldapadd -Y EXTERNAL -H ldapi:/// -f OverlayRefint.ldif
+```
 ## 5 Create Users
 
 ### 5.1 Create Users.ldif
