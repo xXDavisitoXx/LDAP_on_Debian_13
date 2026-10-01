@@ -277,7 +277,7 @@ Check the base group is imported
 sudo ldapsearch -x -b "dc=computer,dc=academy,dc=com" ou
 ```
 
-## 4 Import sudoers or other schemas to LDAP
+## 4 Schemas to LDAP
 El esquema sudo debe existir antes de importar cualquier LDIF que contenga objetos sudoRole, pero no depende de que hayas importado previamente base.ldif.
 
 ### 4.1 Download the Debian packet
@@ -302,7 +302,7 @@ sudo ldapadd -Y EXTERNAL -H ldapi:/// -f extract/usr/share/doc/sudo-ldap/schema.
 ```bash
 find extract -name "schema.olcSudo"
 ```
-
+## Modules
 ### Add MemberOf Module
 ```bash
 nano Memberof.ldif
@@ -318,7 +318,7 @@ olcModuleLoad: memberof
 ```bash
 sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f Memberof.ldif
 ```
-----------------------------------------------------------------------------------------------------------------
+
 ### Add Overlay MemberOf
 ```bash
 nano OverlayMemberOf.ldif
@@ -337,7 +337,7 @@ olcMemberOfRefInt: TRUE
 ```bash
 sudo ldapadd -Y EXTERNAL -H ldapi:/// -f OverlayMemberOf.ldif
 ```
-----------------------------------------------------------------------------------------------------------------
+
 ### Add Refint Module
 ```bash
 nano Refint.ldif
@@ -353,7 +353,7 @@ olcModuleLoad: refint
 ```bash
 sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f Refint.ldif
 ```
-----------------------------------------------------------------------------------------------------------------
+
 ### Add Overlay Refint
 ```bash
 nano OverlayRefint.ldif
