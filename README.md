@@ -676,7 +676,25 @@ Check:
 ```bash
 sudo ldapsearch -LLL -Y EXTERNAL -H ldapi:/// -b "olcDatabase={1}mdb,cn=config" olcSyncrepl
 ```
-## 12 Activate Mirror mode on LDAP-1 and LDAP-2 (Only Master-Slave)
+
+### 12 Activate multiprovider
+To ensure both LDAP instances are writable rather than read-only, it is necessary to enable multi-provider support
+```bash
+nano MultiProvider.ldif
+```
+```conf
+# MultiProvider.ldif
+
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+add: olcMultiProvider
+olcMultiProvider: TRUE
+```
+```bash
+sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f MultiProvider.ldif
+```
+
+## 13 Activate Mirror mode on LDAP-1 and LDAP-2 (Only Master-Slave)
 
 ### 12.1 Create Mirror.ldif
 ```bash
