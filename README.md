@@ -1282,6 +1282,13 @@ Accept and verify that we haven't lost any services after activating UFW
 ```bash
 sudo apt install sssd sssd-tools libnss-sss libpam-sss sudo-ldap
 ```
+
+Upload CA.crt
+
+mv CA.crt /usr/local/share/ca-certificates/
+
+ update-ca-certificates
+
 ### Create file /etc/sssd.conf
 ```bash
 nano /etc/sssd.conf
@@ -1336,3 +1343,5 @@ default_shell = /bin/bash
 access_provider = ldap
 ldap_access_filter = (memberOf=cn=SSH-Access,ou=System,ou=Groups,dc=computer,dc=academy,dc=com)
 ```
+
+systemctl restart sssd
