@@ -421,10 +421,10 @@ description: Group for user accounts that administer Linux systems using sudo co
 
 dn: cn=SSH-Access,ou=System,ou=Groups,dc=computer,dc=academy,dc=com
 objectClass: top
-objectClass: posixGroup
+objectClass: groupOfNames
 cn: SSH-Access
-gidNumber: 2002
-description: POSIX group used to restrict remote SSH access to authorized users
+member: cn: uid=user1,ou=Active,ou=Users,dc=computer,dc=academy,dc=com
+description: Group used to restrict remote SSH access to authorized users
 
 dn: cn=Wiki-Access,ou=Applications,ou=Groups,dc=computer,dc=academy,dc=com
 objectClass: top
