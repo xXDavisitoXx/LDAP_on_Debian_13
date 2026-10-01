@@ -1202,10 +1202,14 @@ nano /etc/sssd.conf
 ```
 
 ```conf
+
+# sssd.conf
+
 [sssd]
 config_file_version = 2
 services = nss, pam, ssh, sudo
 domains = computer.academy.com
+# debug_level = 7
 
 [nss]
 homedir_substring = /home
@@ -1213,7 +1217,6 @@ homedir_substring = /home
 [pam]
 
 [domain/computer.academy.com]
-
 id_provider = ldap
 auth_provider = ldap
 chpass_provider = ldap
@@ -1225,9 +1228,9 @@ enumerate = False
 ldap_uri = ldap://Ldap1.computer.academy.com,ldap://Ldap2.computer.academy.com
 ldap_search_base = dc=computer,dc=academy,dc=com
 
-ldap_default_bind_dn = uid=LDAP-Reader,ou=Servicios,ou=Usuarios,dc=computer,dc=academy,dc=com
+ldap_default_bind_dn = uid=LDAP-Reader,ou=Services,ou=Users,dc=computer,dc=academy,dc=com
 ldap_default_authtok_type = password
-ldap_default_authtok = YOUR-PASS
+ldap_default_authtok = YOUR-PASSWORD-HERE
 
 ldap_user_search_base = ou=Users,dc=computer,dc=academy,dc=com
 ldap_group_search_base = ou=Groups,dc=computer,dc=academy,dc=com
@@ -1235,8 +1238,8 @@ ldap_sudo_search_base = ou=Sudoers,ou=Roles,dc=computer,dc=academy,dc=com
 
 ldap_schema = rfc2307bis
 
-ldap_user_object_class = posixAccount
-ldap_group_object_class = posixGroup
+# ldap_user_object_class = posixAccount
+# ldap_group_object_class = posixGroup
 
 ldap_tls_reqcert = demand
 ldap_id_use_start_tls = true
