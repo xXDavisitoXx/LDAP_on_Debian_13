@@ -882,7 +882,7 @@ replace: olcTLSCertificateKeyFile
 olcTLSCertificateKeyFile: /etc/ldap/certs/Ldap1.key
 -
 replace: olcSecurity
-olcSecurity: simple_bind=128 update_ssf=128
+olcSecurity: simple_bind=128
 ```
 
 Create TLS.ldif on LDAP02:
@@ -899,7 +899,7 @@ replace: olcTLSCertificateKeyFile
 olcTLSCertificateKeyFile: /etc/ldap/certs/Ldap2.key
 -
 replace: olcSecurity
-olcSecurity: simple_bind=128 update_ssf=128
+olcSecurity: simple_bind=128
 ```
 
 Apply to each node:
