@@ -371,6 +371,24 @@ olcRefintAttribute: member memberOf
 ```bash
 sudo ldapadd -Y EXTERNAL -H ldapi:/// -f OverlayRefint.ldif
 ```
+
+### Add MultiProvider module
+If we configure multiple multi-master instances without this module enabled, we will not have write permissions on them, as they will only accept changes from their provider
+```bash
+nano MultiProvider.ldif
+```
+```conf
+# MultiProvider.ldif
+
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+add: olcMultiProvider
+olcMultiProvider: TRUE
+```
+```bash
+sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f MultiProvider.ldif
+```
+
 ## 5 Create Users
 
 ### 5.1 Create Users.ldif
