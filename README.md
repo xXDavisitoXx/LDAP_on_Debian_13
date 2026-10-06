@@ -1295,7 +1295,6 @@ nano /etc/sssd.conf
 ```
 
 ```conf
-
 # sssd.conf
 
 [sssd]
@@ -1345,3 +1344,59 @@ ldap_access_filter = (memberOf=cn=SSH-Access,ou=System,ou=Groups,dc=computer,dc=
 ```
 
 systemctl restart sssd
+
+## Extension LDAP for MediaWiki 
+
+```conf
+# /usr/share/mediawiki/LocalSettings.php
+
+# Extension LDAP
+require_once 'extensions/LdapAuthentication/LdapAuthentication.php';
+require_once 'includes/AuthPlugin.php';
+
+$wgAuth = new LdapAuthenticationPlugin();
+
+$wgLDAPDomainNames = array(
+    'computer'
+);
+
+$wgLDAPServerNames = array(
+    'computer' => 'ldap1.computer.academy.com'
+);
+
+$wgLDAPEncryptionType = array(
+    'computer' => 'tls'
+);
+
+$wgLDAPPort = array(
+    'computer' => 389
+);
+
+$wgLDAPUseLocal = false;
+
+$wgLDAPProxyAgent = array(
+    'computer' => 'uid=LDAP-Reader,ou=Services,ou=Users,dc=computer,dc=academy,dc=com'
+);
+
+$wgLDAPProxyAgentPassword = array(
+    'computer' => 'YOUR-PASSWORD'
+);
+
+$wgLDAPSearchAttributes = array(
+    'computer' => 'uid'
+);
+
+$wgLDAPBaseDNs = array(
+    'computer' => 'dc=computer,dc=academy,dc=com'
+);
+
+$wgLDAPUserBaseDNs = array(
+    'computer' => 'ou=Users,dc=computer,dc=academy,dc=com'
+);
+
+/*
+$wgLDAPAuthAttribute = array(
+    'computer' => 'authorizedService=wiki'
+);
+*/
+```
