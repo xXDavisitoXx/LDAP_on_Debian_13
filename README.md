@@ -413,8 +413,8 @@ uid: user1
 cn: John Smith
 sn: Smith
 givenName: John
-uidNumber: 1002
-gidNumber: 1002
+uidNumber: 10001
+gidNumber: 20001
 homeDirectory: /home/john
 loginShell: /bin/bash
 userPassword: {SSHA}N4mY8uLpQ2vKj7XtBwR5cHd9ZaEsTgF1
@@ -431,8 +431,8 @@ uid: user2
 cn: Alice Smith
 sn: Smith
 givenName: Alice
-uidNumber: 1004
-gidNumber: 1004
+uidNumber: 10002
+gidNumber: 20001
 homeDirectory: /home/asmith
 loginShell: /bin/bash
 userPassword: {SSHA}T8pVn3LqH5yKc9RxMwEaZ7BdFuGsJ2Nt
@@ -484,7 +484,7 @@ dn: cn=Linux-Administrators,ou=System,ou=Groups,dc=computer,dc=academy,dc=com
 objectClass: top
 objectClass: posixGroup
 cn: Linux-Administrators
-gidNumber: 2001
+gidNumber: 20001
 description: Group for user accounts that administer Linux systems using sudo comand
 
 dn: cn=SSH-Access,ou=System,ou=Groups,dc=computer,dc=academy,dc=com
