@@ -766,7 +766,7 @@ olcSyncrepl: rid=001
   provider=ldap://Ldap2.computer.academy.com:389
   bindmethod=simple
   binddn="uid=LDAP-Syncer,ou=Services,ou=Users,dc=computer,dc=academy,dc=com"
-  credentials="LDAP-Reader-PASS"
+  credentials="LDAP-Syncer-PASS"
   searchbase="dc=computer,dc=academy,dc=com"
   type=refreshAndPersist
   retry="5 5 300 +"
@@ -784,7 +784,7 @@ olcSyncrepl: rid=002
   provider=ldap://Ldap1.computer.academy.com:389
   bindmethod=simple
   binddn="uid=LDAP-Syncer,ou=Services,ou=Users,dc=computer,dc=academy,dc=com"
-  credentials="LDAP-Raader-PASS"
+  credentials="LDAP-Syncer-PASS"
   searchbase="dc=computer,dc=academy,dc=com"
   type=refreshAndPersist
   retry="5 5 300 +"
@@ -818,9 +818,9 @@ olcMultiProvider: TRUE
 sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f MultiProvider.ldif
 ```
 
-## 13 Activate Mirror mode on LDAP-1 and LDAP-2 (Only Master-Slave)
+## Activate Mirror mode on LDAP-1 and LDAP-2 (Only Master-Slave)
 
-### 12.1 Create Mirror.ldif
+### Create Mirror.ldif
 ```bash
 nano Mirror.ldif
 ```
@@ -834,7 +834,7 @@ add: olcMirrorMode
 olcMirrorMode: TRUE
 ```
 
-### 12.2 Import:
+### Import:
 ```bash
 sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f Mirror.ldif
 ```
@@ -844,7 +844,7 @@ Check:
 sudo ldapsearch -LLL -Y EXTERNAL -H ldapi:/// -b "olcDatabase={1}mdb,cn=config" olcMirrorMode
 ```
 
-## Enable TLS with StartTLS
+## 13 Enable TLS with StartTLS
 In a multi-master OpenLDAP environment, it is common practice to enable TLS using self-signed certificates from an internal CA
 
 * Create an internal CA.
@@ -870,7 +870,7 @@ In a multi-master OpenLDAP environment, it is common practice to enable TLS usin
     └── Ldap2.key
 ```
 
-### Create an internal CA
+### 13.1 Create an internal CA
 
 ```bash
 mkdir CA
@@ -887,7 +887,7 @@ openssl req -new -x509 \
 -subj "/C=US/O=Computer_Academy/CN=Computer_Academy_LDAP_CA"
 ```
 
-### Generate a certificate for each LDAP node
+### 13.2 Generate a certificate for each LDAP node
 
 LDAP1:
 ```bash
@@ -912,7 +912,7 @@ openssl req -new \
 -subj "/C=US/O=Computer_Academy/CN=Ldap2.computer.academy.com"
 ```
 
-### Create SAN files
+### 13.4 Create SAN files
 LDAP1:
 ```bash
 cat > Ldap1.ext << EOF
@@ -943,7 +943,7 @@ DNS.2=Ldap2
 EOF
 ```
 
-### Self-sign the certificates each LDAP
+### 13.5 Self-sign the certificates each LDAP
 LDAP1:
 ```bash
 openssl x509 -req \
@@ -968,7 +968,7 @@ openssl x509 -req \
 -extfile Ldap2.ext
 ```
 
-### Install certificates on each node
+### 13.6 Install certificates on each node
 LDAP01:
 ```bash
 mkdir -p /etc/ldap/Certs
@@ -989,7 +989,7 @@ sudo chown -R openldap:openldap /etc/ldap/Certs/*
 sudo chmod 600 /etc/ldap/Certs/*.key
 sudo chmod 644 /etc/ldap/Certs/*.crt
 ```
-### Configure TLS in cn=config LDAP on each node
+### 13.7 Configure TLS in cn=config LDAP on each node
 Create TLS.ldif on LDAP01:
 ```conf
 # TLS.ldif
@@ -1031,7 +1031,7 @@ Apply to each node:
 sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f TLS.ldif
 ```
 
-### Configure LDAP servers to trust the CA
+### 13.8 Configure LDAP servers to trust the CA
 ```bash
 sudo nano /etc/ldap/ldap.conf
 ```
@@ -1046,7 +1046,7 @@ Restart slapd service
 systemctl restart slapd
 ```
 
-### Configure CA trust
+### 13.9 Configure CA trust
 Copy ca.crt to all LDAP nodes and clients
 ```bash
 cp ca.crt /usr/local/share/ca-certificates/
@@ -1054,7 +1054,7 @@ cp ca.crt /usr/local/share/ca-certificates/
 ```bash
 update-ca-certificates
 ```
-### TLS on multimaster
+### 13.10 TLS on multimaster
 Modify SyncRepl on each LDAP:
 ```bash
 nano Syncrepl.ldif
@@ -1103,23 +1103,23 @@ TLS: peer cert untrusted
 TLS certificate verification failed
 ```
 
-## 13 Install and configure LAM 
+## 14 Install and configure LAM 
 
-### 13.1 Download and install Packet
+### 14.1 Download and install Packet
 
 ```bash
 sudo apt install ldap-account-manager
 ```
 ⚠️ If you want to manage home directories and quotas on client hosts, you must use the `ldap-account-manager-lamdaemon` package on the LDAP clients.
 
-### 13.2 Update PHP memory limit to 256M
+### 14.2 Update PHP memory limit to 256M
 ```bash
  nano /etc/php/8.4/apache2/php.ini
 ```
 ```bash
 memory_limit = 256M
 ```
-### 13.3 Secure IP range to connect 
+### 14.3 Secure IP range to connect 
 
 ```bash
  nano /etc/apache2/conf-enabled/ldap-account-manager.conf
@@ -1129,31 +1129,31 @@ memory_limit = 256M
 #Require all granted
 Require ip 127.0.0.1 192.168.10.0/24
 ```
-### 13.3 Restart service Apache2
+### 14.3 Restart service Apache2
 
 ```conf
 sudo systemctl restart apache2
 ```
 
-### 13.4 Try web acces
+### 14.4 Try web acces
 http://LDAP-IP/lam
 <p align="center">
     <img src="Images/LAM/LAM-Cover.png">
 </p>
 
-### 13.5 Click the menu "LAM configuration" on the top right.
+### 14.5 Click the menu "LAM configuration" on the top right.
 <p align="center">
     <img src="Images/LAM/LAM-Edit-Profiles.png">
 </p>
 
-### 13.6 Click "Edit server profiles" to modify the OpenLDAP profile.
+### 14.6 Click "Edit server profiles" to modify the OpenLDAP profile.
 * User: lam
 * pass: lam
 <p align="center">
     <img src="Images/LAM/LAM-Acces-Profile.png">
 </p>
 
-### 13.7 Change default password LAM 
+### 14.7 Change default password LAM 
 On the first tab, "General Settings," scroll all the way down to the section
 labeled "Profile Password" and enter the new password twice.
 <p align="center">
@@ -1175,7 +1175,7 @@ On the Profile password, input the new password and repeat.
 
 ⚠️ We recommnded change login method in server preferences to LDAP search
 
-### 13.8 Edit users and groups directory
+### 14.8 Edit users and groups directory
 
 Next, click on the Account Types section the configure the following section:
 <p align="center">
@@ -1185,7 +1185,7 @@ On the Users section, input the default base domain for OpenLDAP users. In his c
 On the Groups section, input the default base domain for the group. In this case, the default other group is Groups.
 Click Save to apply the changes.
 
-### 13.9 TLS on LAM
+### 14.9 TLS on LAM
 
 Now that LDAP is running with TLS, we need to enable it in LAM; to do this, we simply create a symbolic link from
 the certificate authority to the system's certificate path and update the certificate database
