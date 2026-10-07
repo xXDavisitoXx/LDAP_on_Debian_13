@@ -427,6 +427,17 @@ sn: LDAP-Reader
 userPassword: {SSHA}XyZ12345abcdef67890GhIjKlMnOpQrS
 description: Service account for reading to the LDAP tree
 
+dn: uid=LDAP-Syncer,ou=Services,ou=Users,dc=computer,dc=academy,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+uid: LDAP-Syncer
+cn: LDAP-Syncer
+sn: LDAP-Syncer
+userPassword: {SSHA}8kL2m9PqR5sT1vWxY3zA4bCdEfG7hIjK
+description: Service account for synchronizing the LDAP tree
+
 dn: uid=user1,ou=Active,ou=Users,dc=computer,dc=academy,dc=com
 objectClass: top
 objectClass: person
