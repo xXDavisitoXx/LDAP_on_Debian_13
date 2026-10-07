@@ -373,7 +373,8 @@ objectClass: olcConfig
 objectClass: olcOverlayConfig
 objectClass: olcRefintConfig
 olcOverlay: refint
-olcRefintAttribute: member memberOf
+olcRefintAttribute: member
+olcRefintAttribute: memberOf
 ```
 ```bash
 sudo ldapadd -Y EXTERNAL -H ldapi:/// -f OverlayRefint.ldif
