@@ -516,6 +516,13 @@ member: uid=LDAP-Reader,ou=Services,ou=Users,dc=computer,dc=academy,dc=com
 member: uid=zabbix-service,ou=Services,ou=Users,dc=computer,dc=academy,dc=com
 description: Group for user accounts that read LDAP
 
+dn: cn=LDAP-Replicators,ou=Applications,ou=Groups,dc=computer,dc=academy,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: LDAP-Replicators
+member: uid=LDAP-Syncer,ou=Services,ou=Users,dc=computer,dc=academy,dc=com
+description: Group for LDAP replication service accounts
+
 dn: cn=Linux-Administrators,ou=System,ou=Groups,dc=computer,dc=academy,dc=com
 objectClass: top
 objectClass: posixGroup
