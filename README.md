@@ -22,6 +22,13 @@ ORDER:
 * 5. Create the sudo roles
 * 6. Apply the LAM ACL
 
+UID and GUID orders
+* 0-999        >  Reserved for system
+* 1000-1999    >  System local users
+* 2000-9999    >  special services andaccounts
+* 10000-19999  >  LDAP Users
+* 20000-29999  >  LDAP Groups
+
 ## 0 Prepare LDAP Servers
 Edit the hosts file or configure LDAP records on our DNS servers
 ```bash
