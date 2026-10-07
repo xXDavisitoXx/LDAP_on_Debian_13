@@ -582,13 +582,26 @@ nano ACL.ldif
 
 dn: olcDatabase={1}mdb,cn=config
 changetype: modify
-delete: olcAccess
-olcAccess: {2}to * by * read
--
-add: olcAccess
+replace: olcAccess
+# {0} userPassword users can modify their own password. LDAP-Writers can write and LDAP-Replicators can read for replication.
+olcAccess: {0}to attrs=userPassword
+  by self write
+  by anonymous auth
+  by group.exact="cn=LDAP-Writers,ou=Applications,ou=Groups,dc=computer,dc=academy,dc=com" write
+  by group.exact="cn=LDAP-Replicators,ou=Applications,ou=Groups,dc=computer,dc=academy,dc=com" read
+  by * none
+# {1} shadowLastChange access to the attribute is restricted through the defined LDAP groups.
+olcAccess: {1}to attrs=shadowLastChange
+  by self write
+  by group.exact="cn=LDAP-Writers,ou=Applications,ou=Groups,dc=computer,dc=academy,dc=com" write
+  by group.exact="cn=LDAP-Readers,ou=Applications,ou=Groups,dc=computer,dc=academy,dc=com" read
+  by group.exact="cn=LDAP-Replicators,ou=Applications,ou=Groups,dc=computer,dc=academy,dc=com" read
+  by * none
+# {2} LDAP directory tree only members of the defined LDAP groups are allowed to access the directory tree.
 olcAccess: {2}to dn.subtree="dc=computer,dc=academy,dc=com"
   by group.exact="cn=LDAP-Writers,ou=Applications,ou=Groups,dc=computer,dc=academy,dc=com" write
   by group.exact="cn=LDAP-Readers,ou=Applications,ou=Groups,dc=computer,dc=academy,dc=com" read
+  by group.exact="cn=LDAP-Replicators,ou=Applications,ou=Groups,dc=computer,dc=academy,dc=com" read
   by * none
 ```
 
