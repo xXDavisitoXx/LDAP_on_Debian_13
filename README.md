@@ -1337,7 +1337,7 @@ Accept and verify that we haven't lost any services after activating UFW
 
 ### Install basic software
 ```bash
-sudo apt install sssd sssd-tools libnss-sss libpam-sss sudo-ldap
+sudo apt install sssd sssd-tools sssd-ldap libnss-sss libpam-sss ldap-utils
 ```
 
 Upload CA.crt
